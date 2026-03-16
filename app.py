@@ -110,9 +110,9 @@ Longitude = st.sidebar.number_input(
 st.sidebar.markdown("---")
 st.sidebar.header("📞 Contact")
 
-st.sidebar.write("**Name:** Amit Gaikwad")
-st.sidebar.write("**Email:** amitgaikwad2003@gmail.com")
-st.sidebar.write("**Phone:** 9552475715")
+st.sidebar.write("**Name:** Vishal Jadhav")
+st.sidebar.write("**Email:** vishaljadhav132003@gmail.com")
+st.sidebar.write("**Phone:** 9529935831")
 
 # ---------------- Convert Input ----------------
 MedInc_model = MedianIncome / 10000
