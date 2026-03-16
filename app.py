@@ -1,10 +1,6 @@
 import streamlit as st
 import numpy as np
 import pickle
-import os
-from sklearn.datasets import fetch_california_housing
-from sklearn.model_selection import train_test_split
-from xgboost import XGBRegressor
 
 # ---------------- Page Config ----------------
 st.set_page_config(
@@ -13,15 +9,15 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- Background Style ----------------
+# ---------------- Background + Text Fix ----------------
 st.markdown(
     """
     <style>
+
     .stApp {
         background-image: linear-gradient(
-            rgba(0,0,0,0.6),
-            rgba(0,0,0,0.6)
-        ),
+        rgba(0,0,0,0.75),
+        rgba(0,0,0,0.75)),
         url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
         background-size: cover;
         background-position: center;
@@ -29,46 +25,32 @@ st.markdown(
     }
 
     .block-container {
-        background: rgba(255,255,255,0.92);
+        background-color: rgba(255,255,255,0.96);
         padding: 2rem;
-        border-radius: 12px;
+        border-radius: 15px;
     }
+
+    h1, h2, h3, h4, h5, h6 {
+        color: black !important;
+    }
+
+    p, label, span {
+        color: black !important;
+        font-size:16px;
+    }
+
     </style>
     """,
     unsafe_allow_html=True
 )
 
-# ---------------- Load or Train Model ----------------
-model_path = "model_xgb.pkl"
-
-if os.path.exists(model_path):
-    try:
-        with open(model_path, "rb") as file:
-            model = pickle.load(file)
-    except:
-        st.warning("Model file corrupted. Retraining model...")
-        data = fetch_california_housing()
-        X_train, X_test, y_train, y_test = train_test_split(
-            data.data, data.target, test_size=0.2, random_state=42
-        )
-        model = XGBRegressor()
-        model.fit(X_train, y_train)
-
-        with open(model_path, "wb") as f:
-            pickle.dump(model, f)
-else:
-    st.warning("Model not found. Training new model...")
-
-    data = fetch_california_housing()
-    X_train, X_test, y_train, y_test = train_test_split(
-        data.data, data.target, test_size=0.2, random_state=42
-    )
-
-    model = XGBRegressor()
-    model.fit(X_train, y_train)
-
-    with open(model_path, "wb") as f:
-        pickle.dump(model, f)
+# ---------------- Load Model ----------------
+try:
+    with open("model_xgb.pkl", "rb") as file:
+        model = pickle.load(file)
+except:
+    st.error("model_xgb.pkl not found or corrupted")
+    st.stop()
 
 # ---------------- Title ----------------
 st.title("🏠 California Housing Price Prediction")
@@ -88,10 +70,7 @@ st.sidebar.header("🏡 Property Details")
 
 MedianIncome = st.sidebar.number_input(
     "Median Income of Area ($ per year)",
-    min_value=10000,
-    max_value=200000,
-    value=60000,
-    step=1000
+    10000, 200000, 60000, 1000
 )
 
 HouseAge = st.sidebar.slider(
@@ -100,18 +79,18 @@ HouseAge = st.sidebar.slider(
 )
 
 Rooms = st.sidebar.slider(
-    "Total Rooms in the House",
+    "Total Rooms in House",
     1, 12, 5
 )
 
 Bedrooms = st.sidebar.slider(
-    "Number of Bedrooms",
+    "Bedrooms",
     1, 6, 2
 )
 
 Population = st.sidebar.number_input(
-    "Population of the Local Area",
-    100, 20000, 3000, 100
+    "Population of Area",
+    100, 20000, 3000
 )
 
 Occupancy = st.sidebar.slider(
@@ -120,27 +99,28 @@ Occupancy = st.sidebar.slider(
 )
 
 Latitude = st.sidebar.number_input(
-    "Latitude (Location Coordinate)",
+    "Latitude",
     32.0, 42.0, 36.7
 )
 
 Longitude = st.sidebar.number_input(
-    "Longitude (Location Coordinate)",
+    "Longitude",
     -125.0, -114.0, -119.4
 )
 
-# ---------------- Contact Details ----------------
+# ---------------- Contact ----------------
 st.sidebar.markdown("---")
 st.sidebar.header("📞 Contact")
 
-st.sidebar.write("**Name:** Vishal Jadhav")
-st.sidebar.write("**Email:** vishaljadhav132003@gmail.com")
-st.sidebar.write("**Phone:** 8788965221")
+st.sidebar.write("Name: Vishal Jadhav")
+st.sidebar.write("Email: vishaljadhav132003@gmail.com")
+st.sidebar.write("Phone: 9529935831")
 
 # ---------------- Prepare Input ----------------
 MedInc_model = MedianIncome / 10000
 
 input_data = np.array([[
+
     MedInc_model,
     HouseAge,
     Rooms,
@@ -149,6 +129,7 @@ input_data = np.array([[
     Occupancy,
     Latitude,
     Longitude
+
 ]])
 
 # ---------------- Prediction ----------------
