@@ -35,24 +35,23 @@ try:
     with open("model_xgb.pkl", "rb") as file:
         model = pickle.load(file)
 except:
-    st.error("model_xgb.pkl file not found")
+    st.error("model_xgb.pkl file not found. Please keep it in the same folder as app.py")
     st.stop()
 
 # ---------------- Title ----------------
-st.title("🏠 California Housing Price Prediction App")
+st.title("🏠 California Housing Price Prediction")
 
 st.write(
 """
-This application predicts **house prices in California** using a trained
-Machine Learning model.
+This application predicts **California house prices** using a Machine Learning model.
 
-Enter the property details in the sidebar and click **Predict Price**.
+Enter property details in the sidebar and click **Predict Price**.
 """
 )
 
 st.markdown("---")
 
-# ---------------- Sidebar ----------------
+# ---------------- Sidebar Inputs ----------------
 st.sidebar.header("🏡 Property Details")
 
 MedianIncome = st.sidebar.number_input(
@@ -65,63 +64,48 @@ MedianIncome = st.sidebar.number_input(
 )
 
 HouseAge = st.sidebar.slider(
-    "Age of the House (Years)",
-    min_value=1,
-    max_value=60,
-    value=20,
-    help="How old the house/building is"
+    "House Age (Years)",
+    1, 60, 20,
+    help="Age of the house"
 )
 
 Rooms = st.sidebar.slider(
     "Total Rooms in the House",
-    min_value=1,
-    max_value=12,
-    value=5,
-    help="Total rooms including living room, kitchen, etc."
+    1, 12, 5,
+    help="Total rooms including living room, kitchen etc."
 )
 
 Bedrooms = st.sidebar.slider(
     "Number of Bedrooms",
-    min_value=1,
-    max_value=6,
-    value=2,
+    1, 6, 2,
     help="Total bedrooms in the house"
 )
 
 Population = st.sidebar.number_input(
     "Population of the Local Area",
-    min_value=100,
-    max_value=20000,
-    value=3000,
-    step=100,
-    help="Approximate number of people living in the neighborhood"
+    100, 20000, 3000, 100,
+    help="Approximate population of the neighborhood"
 )
 
 Occupancy = st.sidebar.slider(
     "Average People per House",
-    min_value=1,
-    max_value=8,
-    value=3,
+    1, 8, 3,
     help="Average number of people living in each house"
 )
 
 Latitude = st.sidebar.number_input(
     "Latitude (Location Coordinate)",
-    min_value=32.0,
-    max_value=42.0,
-    value=36.7,
+    32.0, 42.0, 36.7,
     help="California latitude range approx 32–42"
 )
 
 Longitude = st.sidebar.number_input(
     "Longitude (Location Coordinate)",
-    min_value=-125.0,
-    max_value=-114.0,
-    value=-119.4,
+    -125.0, -114.0, -119.4,
     help="California longitude range approx -125 to -114"
 )
 
-# ---------------- Contact Section ----------------
+# ---------------- Contact Details ----------------
 st.sidebar.markdown("---")
 st.sidebar.header("📞 Contact")
 
@@ -132,7 +116,6 @@ st.sidebar.write("**LinkedIn:**")
 st.sidebar.write("https://www.linkedin.com/in/vaishnavi-jadhav-465774327")
 
 # ---------------- Convert Inputs ----------------
-# Dataset expects income in units of $10,000
 MedInc_model = MedianIncome / 10000
 
 input_data = np.array([[
