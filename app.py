@@ -1,7 +1,6 @@
 import streamlit as st
 import numpy as np
 import pickle
-import base64
 from sklearn.datasets import fetch_california_housing
 
 # ---------------- Page Config ----------------
@@ -12,32 +11,25 @@ st.set_page_config(
 )
 
 # ---------------- Background Image ----------------
-def set_background(image_file):
-    with open(image_file, "rb") as f:
-        data = f.read()
-
-    encoded = base64.b64encode(data).decode()
-
-    page_bg = f"""
+st.markdown(
+    """
     <style>
-    .stApp {{
-        background-image: url("data:image/jpg;base64,{encoded}");
+    .stApp {
+        background-image: url("https://images.unsplash.com/photo-1560518883-ce09059eeffa");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
-    }}
+    }
 
-    .block-container {{
+    .block-container {
         background: rgba(255,255,255,0.85);
         padding: 2rem;
         border-radius: 10px;
-    }}
+    }
     </style>
-    """
-
-    st.markdown(page_bg, unsafe_allow_html=True)
-
-set_background("house_bg.jpg")
+    """,
+    unsafe_allow_html=True
+)
 
 # ---------------- Load Model ----------------
 try:
@@ -47,9 +39,12 @@ except:
     st.error("model_xgb.pkl file not found")
     st.stop()
 
+# ---------------- Dataset ----------------
+housing = fetch_california_housing()
+
 # ---------------- Title ----------------
 st.title("🏠 California Housing Price Prediction")
-st.write("Predict housing prices using Machine Learning (XGBoost Model)")
+st.write("Predict California house prices using a Machine Learning model (XGBoost).")
 
 st.markdown("---")
 
@@ -112,7 +107,6 @@ st.sidebar.markdown("---")
 st.sidebar.info("Machine Learning project built using Streamlit and XGBoost.")
 
 # ---------------- Prediction ----------------
-
 input_data = np.array([[MedInc, HouseAge, AveRooms, AveBedrms,
                         Population, AveOccup, Latitude, Longitude]])
 
@@ -126,7 +120,6 @@ if st.button("Predict Price"):
     st.success(f"🏠 Estimated House Price: ${price:,.2f}")
 
 # ---------------- Input Summary ----------------
-
 st.markdown("---")
 st.subheader("Input Summary")
 
