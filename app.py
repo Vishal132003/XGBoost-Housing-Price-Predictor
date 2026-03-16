@@ -42,48 +42,45 @@ st.sidebar.header("🏡 Property Details")
 
 MedianIncome = st.sidebar.number_input(
     "Median Income of Area ($ per year)",
-    min_value=10000,
-    max_value=200000,
-    value=60000,
-    step=1000
+    value=60000
 )
 
-HouseAge = st.sidebar.slider(
+HouseAge = st.sidebar.number_input(
     "House Age (Years)",
-    1, 60, 20
+    value=20
 )
 
-Rooms = st.sidebar.slider(
+Rooms = st.sidebar.number_input(
     "Total Rooms in the House",
-    1, 12, 5
+    value=5
 )
 
-Bedrooms = st.sidebar.slider(
+Bedrooms = st.sidebar.number_input(
     "Number of Bedrooms",
-    1, 6, 2
+    value=2
 )
 
 Population = st.sidebar.number_input(
     "Population of the Local Area",
-    100, 20000, 3000
+    value=3000
 )
 
-Occupancy = st.sidebar.slider(
+Occupancy = st.sidebar.number_input(
     "Average People per House",
-    1, 8, 3
+    value=3
 )
 
 Latitude = st.sidebar.number_input(
-    "Latitude (California range 32–42)",
-    32.0, 42.0, 36.7
+    "Latitude",
+    value=36.7
 )
 
 Longitude = st.sidebar.number_input(
-    "Longitude (California range -125 to -114)",
-    -125.0, -114.0, -119.4
+    "Longitude",
+    value=-119.4
 )
 
-# ---------------- Contact Section ----------------
+# ---------------- Contact ----------------
 st.sidebar.markdown("---")
 st.sidebar.header("📞 Contact")
 
