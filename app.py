@@ -110,10 +110,9 @@ st.sidebar.markdown("---")
 st.sidebar.header("📞 Contact")
 
 st.sidebar.write("**Name:** Vishal Jadhav")
-st.sidebar.write("**Email:** vaishnavijadhav01234@gmail.com")
+st.sidebar.write("**Email:** vishaljadhav132003@gmail.com")
 st.sidebar.write("**Phone:** 8788965221")
-st.sidebar.write("**LinkedIn:**")
-st.sidebar.write("https://www.linkedin.com/in/vaishnavi-jadhav-465774327")
+
 
 # ---------------- Convert Inputs ----------------
 MedInc_model = MedianIncome / 10000
