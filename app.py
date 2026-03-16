@@ -32,10 +32,10 @@ st.markdown(
 
 # ---------------- Load Model ----------------
 try:
-    with open("model_xgb.pkl", "rb") as file:
-        model = pickle.load(file)
-except:
-    st.error("model_xgb.pkl file not found. Please keep it in the same folder as app.py")
+    file = open("model_xgb.pkl", "rb")
+    model = pickle.load(file)
+except FileNotFoundError:
+    st.error("❌ model_xgb.pkl file not found. Please place it in the same folder as app.py")
     st.stop()
 
 # ---------------- Title ----------------
@@ -65,44 +65,37 @@ MedianIncome = st.sidebar.number_input(
 
 HouseAge = st.sidebar.slider(
     "House Age (Years)",
-    1, 60, 20,
-    help="Age of the house"
+    1, 60, 20
 )
 
 Rooms = st.sidebar.slider(
     "Total Rooms in the House",
-    1, 12, 5,
-    help="Total rooms including living room, kitchen etc."
+    1, 12, 5
 )
 
 Bedrooms = st.sidebar.slider(
     "Number of Bedrooms",
-    1, 6, 2,
-    help="Total bedrooms in the house"
+    1, 6, 2
 )
 
 Population = st.sidebar.number_input(
     "Population of the Local Area",
-    100, 20000, 3000, 100,
-    help="Approximate population of the neighborhood"
+    100, 20000, 3000, 100
 )
 
 Occupancy = st.sidebar.slider(
     "Average People per House",
-    1, 8, 3,
-    help="Average number of people living in each house"
+    1, 8, 3
 )
 
 Latitude = st.sidebar.number_input(
     "Latitude (Location Coordinate)",
-    32.0, 42.0, 36.7,
-    help="California latitude range approx 32–42"
+    32.0, 42.0, 36.7
 )
 
 Longitude = st.sidebar.number_input(
     "Longitude (Location Coordinate)",
-    -125.0, -114.0, -119.4,
-    help="California longitude range approx -125 to -114"
+    -125.0, -114.0, -119.4
 )
 
 # ---------------- Contact Details ----------------
@@ -111,8 +104,7 @@ st.sidebar.header("📞 Contact")
 
 st.sidebar.write("**Name:** Vishal Jadhav")
 st.sidebar.write("**Email:** vishaljadhav132003@gmail.com")
-st.sidebar.write("**Phone:** 8788965221")
-
+st.sidebar.write("**Phone:** 9529935831")
 
 # ---------------- Convert Inputs ----------------
 MedInc_model = MedianIncome / 10000
@@ -134,14 +126,12 @@ st.subheader("Predict House Price")
 if st.button("Predict Price"):
 
     prediction = model.predict(input_data)[0]
-
     price = prediction * 100000
 
     st.success(f"🏠 Estimated House Price: ${price:,.2f}")
 
 # ---------------- Input Summary ----------------
 st.markdown("---")
-
 st.subheader("Input Summary")
 
 st.write({
