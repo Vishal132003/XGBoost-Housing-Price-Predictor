@@ -1,6 +1,10 @@
 import streamlit as st
 import numpy as np
 import pickle
+import os
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from xgboost import XGBRegressor
 
 # ---------------- Page Config ----------------
 st.set_page_config(
@@ -34,13 +38,37 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ---------------- Load Model ----------------
-try:
-    file = open("model_xgb.pkl", "rb")
-    model = pickle.load(file)
-except FileNotFoundError:
-    st.error("❌ model_xgb.pkl file not found. Please place it in the same folder as app.py")
-    st.stop()
+# ---------------- Load or Train Model ----------------
+model_path = "model_xgb.pkl"
+
+if os.path.exists(model_path):
+    try:
+        with open(model_path, "rb") as file:
+            model = pickle.load(file)
+    except:
+        st.warning("Model file corrupted. Retraining model...")
+        data = fetch_california_housing()
+        X_train, X_test, y_train, y_test = train_test_split(
+            data.data, data.target, test_size=0.2, random_state=42
+        )
+        model = XGBRegressor()
+        model.fit(X_train, y_train)
+
+        with open(model_path, "wb") as f:
+            pickle.dump(model, f)
+else:
+    st.warning("Model not found. Training new model...")
+
+    data = fetch_california_housing()
+    X_train, X_test, y_train, y_test = train_test_split(
+        data.data, data.target, test_size=0.2, random_state=42
+    )
+
+    model = XGBRegressor()
+    model.fit(X_train, y_train)
+
+    with open(model_path, "wb") as f:
+        pickle.dump(model, f)
 
 # ---------------- Title ----------------
 st.title("🏠 California Housing Price Prediction")
@@ -63,50 +91,42 @@ MedianIncome = st.sidebar.number_input(
     min_value=10000,
     max_value=200000,
     value=60000,
-    step=1000,
-    help="Average yearly income of households in this area"
+    step=1000
 )
 
 HouseAge = st.sidebar.slider(
     "House Age (Years)",
-    1, 60, 20,
-    help="Age of the house"
+    1, 60, 20
 )
 
 Rooms = st.sidebar.slider(
     "Total Rooms in the House",
-    1, 12, 5,
-    help="Total rooms including living room, kitchen etc."
+    1, 12, 5
 )
 
 Bedrooms = st.sidebar.slider(
     "Number of Bedrooms",
-    1, 6, 2,
-    help="Total bedrooms in the house"
+    1, 6, 2
 )
 
 Population = st.sidebar.number_input(
     "Population of the Local Area",
-    100, 20000, 3000, 100,
-    help="Approximate population of the neighborhood"
+    100, 20000, 3000, 100
 )
 
 Occupancy = st.sidebar.slider(
     "Average People per House",
-    1, 8, 3,
-    help="Average number of people living in each house"
+    1, 8, 3
 )
 
 Latitude = st.sidebar.number_input(
     "Latitude (Location Coordinate)",
-    32.0, 42.0, 36.7,
-    help="California latitude range approx 32–42"
+    32.0, 42.0, 36.7
 )
 
 Longitude = st.sidebar.number_input(
     "Longitude (Location Coordinate)",
-    -125.0, -114.0, -119.4,
-    help="California longitude range approx -125 to -114"
+    -125.0, -114.0, -119.4
 )
 
 # ---------------- Contact Details ----------------
@@ -117,7 +137,7 @@ st.sidebar.write("**Name:** Vishal Jadhav")
 st.sidebar.write("**Email:** vishaljadhav132003@gmail.com")
 st.sidebar.write("**Phone:** 8788965221")
 
-# ---------------- Convert Inputs ----------------
+# ---------------- Prepare Input ----------------
 MedInc_model = MedianIncome / 10000
 
 input_data = np.array([[
@@ -137,14 +157,12 @@ st.subheader("Predict House Price")
 if st.button("Predict Price"):
 
     prediction = model.predict(input_data)[0]
-
     price = prediction * 100000
 
     st.success(f"🏠 Estimated House Price: ${price:,.2f}")
 
 # ---------------- Input Summary ----------------
 st.markdown("---")
-
 st.subheader("Input Summary")
 
 st.write({
