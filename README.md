@@ -67,7 +67,7 @@ california-housing-price-predictor/
 ### 1️⃣ Clone the repository
 
 ```
-git clone https://github.com/your-username/california-housing-price-predictor.git
+git clone https://github.com/Vishal132003/california-housing-price-predictor.git
 ```
 
 ### 2️⃣ Navigate to the project folder
@@ -118,12 +118,7 @@ The trained model is saved using **Pickle** and loaded inside the Streamlit appl
 
 **Vishal Jadhav**
 
-📧 Email: [vaishnavijadhav01234@gmail.com](mailto:vaishnavijadhav01234@gmail.com)
-📱 Phone: 8788965221
-🔗 LinkedIn: https://www.linkedin.com/in/vaishnavi-jadhav-465774327
+📧 Email: [vishaljadhav132003@gmail.com](mailto:vaishnavijadhav01234@gmail.com)
+📱 Phone: 9529935831
 
 ---
-
-## 📜 License
-
-This project is developed for **educational and portfolio purposes**.
