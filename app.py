@@ -44,9 +44,13 @@ width:200px;
 
 # ---------------- Load Model ----------------
 try:
-    model = pickle.load(open("model_xgb.pkl","rb"))
-except:
+    with open("model_xgb.pkl", "rb") as file:
+        model = pickle.load(file)
+except FileNotFoundError:
     st.error("❌ model_xgb.pkl file not found. Please keep it in the same folder.")
+    st.stop()
+except Exception as e:
+    st.error(f"❌ Error loading model: {e}")
     st.stop()
 
 # ---------------- Title ----------------
@@ -73,37 +77,37 @@ MedianIncome = st.sidebar.number_input(
 
 HouseAge = st.sidebar.slider(
     "House Age (Years)",
-    1,60,20
+    1, 60, 20
 )
 
 Rooms = st.sidebar.slider(
     "Total Rooms",
-    1,12,5
+    1, 12, 5
 )
 
 Bedrooms = st.sidebar.slider(
     "Bedrooms",
-    1,6,2
+    1, 6, 2
 )
 
 Population = st.sidebar.number_input(
     "Population of Area",
-    100,20000,3000,100
+    100, 20000, 3000, 100
 )
 
 Occupancy = st.sidebar.slider(
     "People per House",
-    1,8,3
+    1, 8, 3
 )
 
 Latitude = st.sidebar.number_input(
     "Latitude",
-    32.0,42.0,36.7
+    32.0, 42.0, 36.7
 )
 
 Longitude = st.sidebar.number_input(
     "Longitude",
-    -125.0,-114.0,-119.4
+    -125.0, -114.0, -119.4
 )
 
 # ---------------- Contact Section ----------------
