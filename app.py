@@ -1,6 +1,8 @@
 import streamlit as st
 import numpy as np
-import pickle
+from sklearn.datasets import fetch_california_housing
+from sklearn.model_selection import train_test_split
+from xgboost import XGBRegressor
 
 # ---------------- Page Config ----------------
 st.set_page_config(
@@ -9,7 +11,7 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- Background + Text Fix ----------------
+# ---------------- Background Style ----------------
 st.markdown(
     """
     <style>
@@ -25,18 +27,13 @@ st.markdown(
     }
 
     .block-container {
-        background-color: rgba(255,255,255,0.96);
+        background-color: rgba(255,255,255,0.95);
         padding: 2rem;
         border-radius: 15px;
     }
 
-    h1, h2, h3, h4, h5, h6 {
-        color: black !important;
-    }
-
-    p, label, span {
-        color: black !important;
-        font-size:16px;
+    h1, h2, h3 {
+        color: black;
     }
 
     </style>
@@ -44,13 +41,27 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-# ---------------- Load Model ----------------
-try:
-    with open("model_xgb.pkl", "rb") as file:
-        model = pickle.load(file)
-except:
-    st.error("model_xgb.pkl not found or corrupted")
-    st.stop()
+# ---------------- Train Model ----------------
+@st.cache_resource
+def train_model():
+
+    data = fetch_california_housing()
+
+    X = data.data
+    y = data.target
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    model = XGBRegressor()
+
+    model.fit(X_train, y_train)
+
+    return model
+
+
+model = train_model()
 
 # ---------------- Title ----------------
 st.title("🏠 California Housing Price Prediction")
@@ -65,12 +76,15 @@ Enter property details in the sidebar and click **Predict Price**.
 
 st.markdown("---")
 
-# ---------------- Sidebar Inputs ----------------
+# ---------------- Sidebar ----------------
 st.sidebar.header("🏡 Property Details")
 
 MedianIncome = st.sidebar.number_input(
     "Median Income of Area ($ per year)",
-    10000, 200000, 60000, 1000
+    min_value=10000,
+    max_value=200000,
+    value=60000,
+    step=1000
 )
 
 HouseAge = st.sidebar.slider(
@@ -84,7 +98,7 @@ Rooms = st.sidebar.slider(
 )
 
 Bedrooms = st.sidebar.slider(
-    "Bedrooms",
+    "Number of Bedrooms",
     1, 6, 2
 )
 
@@ -114,7 +128,7 @@ st.sidebar.header("📞 Contact")
 
 st.sidebar.write("Name: Vishal Jadhav")
 st.sidebar.write("Email: vishaljadhav132003@gmail.com")
-st.sidebar.write("Phone: 9529935831")
+st.sidebar.write("Phone: 8788965221")
 
 # ---------------- Prepare Input ----------------
 MedInc_model = MedianIncome / 10000
@@ -138,12 +152,14 @@ st.subheader("Predict House Price")
 if st.button("Predict Price"):
 
     prediction = model.predict(input_data)[0]
+
     price = prediction * 100000
 
     st.success(f"🏠 Estimated House Price: ${price:,.2f}")
 
 # ---------------- Input Summary ----------------
 st.markdown("---")
+
 st.subheader("Input Summary")
 
 st.write({
