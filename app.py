@@ -11,18 +11,24 @@ st.set_page_config(
     layout="wide"
 )
 
-# ---------------- Load Dataset ----------------
-data = fetch_california_housing()
-X = data.data
-y = data.target
+# ---------------- Load + Train Model (Cached) ----------------
+@st.cache_resource
+def load_model():
 
-# ---------------- Train Model ----------------
-X_train, X_test, y_train, y_test = train_test_split(
-    X, y, test_size=0.2, random_state=42
-)
+    data = fetch_california_housing()
+    X = data.data
+    y = data.target
 
-model = XGBRegressor()
-model.fit(X_train, y_train)
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+    model = XGBRegressor()
+    model.fit(X_train, y_train)
+
+    return model
+
+model = load_model()
 
 # ---------------- Title ----------------
 st.title("🏠 California Housing Price Prediction")
@@ -40,58 +46,28 @@ st.markdown("---")
 # ---------------- Sidebar Inputs ----------------
 st.sidebar.header("🏡 Property Details")
 
-MedianIncome = st.sidebar.number_input(
-    "Median Income of Area ($ per year)",
-    value=60000
-)
-
-HouseAge = st.sidebar.number_input(
-    "House Age (Years)",
-    value=20
-)
-
-Rooms = st.sidebar.number_input(
-    "Total Rooms in the House",
-    value=5
-)
-
-Bedrooms = st.sidebar.number_input(
-    "Number of Bedrooms",
-    value=2
-)
-
-Population = st.sidebar.number_input(
-    "Population of the Local Area",
-    value=3000
-)
-
-Occupancy = st.sidebar.number_input(
-    "Average People per House",
-    value=3
-)
-
-Latitude = st.sidebar.number_input(
-    "Latitude",
-    value=36.7
-)
-
-Longitude = st.sidebar.number_input(
-    "Longitude",
-    value=-119.4
-)
+MedianIncome = st.sidebar.number_input("Median Income ($ per year)", value=60000)
+HouseAge = st.sidebar.number_input("House Age (Years)", value=20)
+Rooms = st.sidebar.number_input("Total Rooms", value=5)
+Bedrooms = st.sidebar.number_input("Bedrooms", value=2)
+Population = st.sidebar.number_input("Population of Area", value=3000)
+Occupancy = st.sidebar.number_input("Average People per House", value=3)
+Latitude = st.sidebar.number_input("Latitude", value=36.7)
+Longitude = st.sidebar.number_input("Longitude", value=-119.4)
 
 # ---------------- Contact ----------------
 st.sidebar.markdown("---")
 st.sidebar.header("📞 Contact")
 
-st.sidebar.write("**Name:** Vishal Jadhav")
-st.sidebar.write("**Email:** vishaljadhav132003@gmail.com")
-st.sidebar.write("**Phone:** 8788965221")
+st.sidebar.write("Name: Vishal Jadhav")
+st.sidebar.write("Email: vishaljadhav132003@gmail.com")
+st.sidebar.write("Phone: 8788965221")
 
 # ---------------- Prepare Input ----------------
 MedInc_model = MedianIncome / 10000
 
 input_data = np.array([[
+
     MedInc_model,
     HouseAge,
     Rooms,
@@ -100,6 +76,7 @@ input_data = np.array([[
     Occupancy,
     Latitude,
     Longitude
+
 ]])
 
 # ---------------- Prediction ----------------
@@ -110,15 +87,16 @@ if st.button("Predict Price"):
     prediction = model.predict(input_data)[0]
     price = prediction * 100000
 
-    st.success(f"🏠 Estimated House Price: ${price:,.2f}")
+    st.success(f"Estimated House Price: ${price:,.2f}")
 
 # ---------------- Input Summary ----------------
 st.markdown("---")
+
 st.subheader("Input Summary")
 
 st.write({
     "Median Income ($)": MedianIncome,
-    "House Age (Years)": HouseAge,
+    "House Age": HouseAge,
     "Rooms": Rooms,
     "Bedrooms": Bedrooms,
     "Population": Population,
