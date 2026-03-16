@@ -61,7 +61,7 @@ st.sidebar.header("📞 Contact")
 
 st.sidebar.write("Name: Vishal Jadhav")
 st.sidebar.write("Email: vishaljadhav132003@gmail.com")
-st.sidebar.write("Phone: 8788965221")
+st.sidebar.write("Phone: 9529935831")
 
 # ---------------- Prepare Input ----------------
 MedInc_model = MedianIncome / 10000
