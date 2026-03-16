@@ -1,24 +1,37 @@
 # 🏠 California Housing Price Prediction using XGBoost
 
 A **Machine Learning web application** built with **Streamlit** that predicts California house prices based on housing features such as median income, house age, population, and location.
-The model is trained using the California Housing dataset and an XGBoost regression algorithm.
+
+The model is trained using the **California Housing Dataset** and the **XGBoost Regressor algorithm**.
+
+---
+
+## 🌐 Live Demo
+
+Try the application here:
+
+🔗 **Streamlit App:**
+https://xgboost-housing-price-predictor-hdt5nszq76itqmhchuzm5u.streamlit.app/
+
+This live application allows users to enter housing details and instantly predict house prices using a trained machine learning model.
 
 ---
 
 ## 📌 Project Overview
 
-This project demonstrates how Machine Learning can be used to estimate real estate prices.
-Users can enter housing details through a simple web interface, and the trained model will predict the estimated house price.
+This project demonstrates how **Machine Learning can be applied to real estate price prediction**.
 
-The application is designed with a **clean interactive interface using Streamlit**, making it easy for users to test predictions in real time.
+Users can enter housing details through an **interactive web interface**, and the trained model predicts the **estimated house price in real time**.
+
+The application uses **Streamlit** to provide a simple and user-friendly interface for testing predictions.
 
 ---
 
 ## 📊 Dataset
 
-The model is trained using the California Housing dataset provided by **scikit-learn**.
+The model is trained using the **California Housing Dataset** provided by **scikit-learn**.
 
-**Features used in the model:**
+### Features Used
 
 | Feature    | Description                  |
 | ---------- | ---------------------------- |
@@ -31,9 +44,8 @@ The model is trained using the California Housing dataset provided by **scikit-l
 | Latitude   | House location latitude      |
 | Longitude  | House location longitude     |
 
-**Target Variable**
-
-* Median house value (predicted price)
+**Target Variable:**
+Median House Value (Predicted House Price)
 
 ---
 
@@ -51,66 +63,58 @@ The model is trained using the California Housing dataset provided by **scikit-l
 
 ## 📂 Project Structure
 
-```
 california-housing-price-predictor/
+
 │
-├── app.py                # Streamlit application
-├── model_xgb.pkl         # Trained XGBoost model
-├── requirements.txt      # Project dependencies
-└── README.md             # Project documentation
-```
+├── app.py (Streamlit application)
+├── model_xgb.pkl (Trained XGBoost model)
+├── requirements.txt (Project dependencies)
+└── README.md (Project documentation)
 
 ---
 
 ## 🚀 How to Run the Project
 
-### 1️⃣ Clone the repository
+### 1. Clone the Repository
 
-```
 git clone https://github.com/Vishal132003/california-housing-price-predictor.git
-```
 
-### 2️⃣ Navigate to the project folder
+### 2. Navigate to the Project Folder
 
-```
 cd california-housing-price-predictor
-```
 
-### 3️⃣ Install dependencies
+### 3. Install Dependencies
 
-```
 pip install -r requirements.txt
-```
 
-### 4️⃣ Run the Streamlit application
+### 4. Run the Streamlit Application
 
-```
 streamlit run app.py
-```
 
 ---
 
 ## 🖥️ Application Features
 
-* Interactive sidebar inputs
-* Real-time house price prediction
-* Clean and simple Streamlit interface
-* Input summary display
-* Contact details in sidebar
+• Interactive sidebar for entering housing details
+• Real-time house price prediction
+• Clean and simple Streamlit interface
+• Input summary display
+• Contact information in sidebar
 
 ---
 
 ## 📈 Model Information
 
-Model Used: **XGBoost Regressor**
+**Model Used:** XGBoost Regressor
 
 Why XGBoost?
 
-* High performance
-* Handles non-linear relationships well
-* Robust and widely used in real-world ML applications
+• High predictive performance
+• Handles non-linear relationships effectively
+• Efficient and scalable
+• Widely used in real-world machine learning projects
 
-The trained model is saved using **Pickle** and loaded inside the Streamlit application for prediction.
+The trained model is saved using **Pickle** and loaded inside the Streamlit application for making predictions.
 
 ---
 
@@ -118,7 +122,5 @@ The trained model is saved using **Pickle** and loaded inside the Streamlit appl
 
 **Vishal Jadhav**
 
-📧 Email: [vishaljadhav132003@gmail.com](mailto:vaishnavijadhav01234@gmail.com)
-📱 Phone: 9529935831
-
----
+Email: [vishaljadhav132003@gmail.com](mailto:vishaljadhav132003@gmail.com)
+Phone: 9529935831
